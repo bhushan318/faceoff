@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Debates</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        #live-debates {
+            list-style: none;
+            padding: 0;
+        }
+
+        #live-debates li {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        #live-debates li a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1.2em;
+        }
+
+        #live-debates li a:hover {
+            text-decoration: underline;
+        }
+
+        .video-container {
+            margin-bottom: 20px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .actions button:hover {
+            background-color: #0056b3;
+        }
+
+        .comments textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+
+        .comments button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .comments button:hover {
+            background-color: #218838;
+        }
+
+        #comments-list {
+            margin-top: 10px;
+        }
+
+        #comments-list p {
+            margin: 0 0 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Home Page -->
+        <div id="home-page">
+            <h1>Ongoing Live Debates</h1>
+            <ul id="live-debates">
+                <!-- Live debates will be dynamically inserted here -->
+            </ul>
+        </div>
+
+        <!-- Live Streaming Page -->
+        <div id="live-page" style="display: none;">
+            <h1 id="debate-title"></h1>
+            <div class="video-container">
+                <iframe id="live-video" width="100%" height="400" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="actions">
+                <button onclick="likeVideo()">Like</button>
+                <button onclick="shareVideo()">Share</button>
+            </div>
+            <div class="comments">
+                <textarea id="comment-input" placeholder="Add a comment..."></textarea>
+                <button onclick="addComment()">Comment</button>
+                <div id="comments-list"></div>
+            </div>
+            <button onclick="goBack()">Back to Debates</button>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for live debates
+        const liveDebates = [
+            {
+                id: 1,
+                title: "Climate Change: Is it too late to act?",
+                youtubeLink: "https://www.youtube.com/embed/abc123" // Replace with actual YouTube embed link
+            },
+            {
+                id: 2,
+                title: "Universal Basic Income: A solution to poverty?",
+                youtubeLink: "https://www.youtube.com/embed/xyz456" // Replace with actual YouTube embed link
+            },
+            {
+                id: 3,
+                title: "Artificial Intelligence: Boon or Bane?",
+                youtubeLink: "https://www.youtube.com/embed/def789" // Replace with actual YouTube embed link
+            }
+        ];
+
+        const liveDebatesList = document.getElementById('live-debates');
+        const homePage = document.getElementById('home-page');
+        const livePage = document.getElementById('live-page');
+        const debateTitle = document.getElementById('debate-title');
+        const liveVideo = document.getElementById('live-video');
+        const commentsList = document.getElementById('comments-list');
+
+        // Render live debates on the home page
+        function renderLiveDebates() {
+            liveDebatesList.innerHTML = '';
+            liveDebates.forEach(debate => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <a href="#" onclick="navigateToLive(${debate.id})">${debate.title}</a>
+                `;
+                liveDebatesList.appendChild(listItem);
+            });
+        }
+
+        // Navigate to the live streaming page
+        function navigateToLive(debateId) {
+            const selectedDebate = liveDebates.find(debate => debate.id === debateId);
+            if (selectedDebate) {
+                debateTitle.textContent = selectedDebate.title;
+                liveVideo.src = selectedDebate.youtubeLink;
+                homePage.style.display = 'none';
+                livePage.style.display = 'block';
+            }
+        }
+
+        // Go back to the home page
+        function goBack() {
+            homePage.style.display = 'block';
+            livePage.style.display = 'none';
+        }
+
+        // Handle liking the video
+        function likeVideo() {
+            alert('You liked this video!');
+        }
+
+        // Handle sharing the video
+        function shareVideo() {
+            alert('Share this video!');
+        }
+
+        // Add a comment
+        function addComment() {
+            const commentInput = document.getElementById('comment-input');
+            const comment = commentInput.value.trim();
+            if (comment) {
+                const commentElement = document.createElement('p');
+                commentElement.textContent = comment;
+                commentsList.appendChild(commentElement);
+                commentInput.value = '';
+            }
+        }
+
+        // Initial render of live debates
+        renderLiveDebates();
+    </script>
+<button onclick="goBack()">Back to home</button>
+</body>
+</html>
